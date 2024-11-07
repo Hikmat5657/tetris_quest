@@ -6,30 +6,54 @@ frame_size_y = 800
 window_screen = pygame.display.set_mode((frame_size_x, frame_size_y))
 pygame.display.set_caption("Tetris quest")
 clock = pygame.time.Clock()
-# score = 0 
-# high_score = 0 
 game_init = False
-color = (0,0,255)
+color = (0, 0, 255)
 font = pygame.font.SysFont(None, 32)
 FPS = 60
+blocks = []
+
+last_spawn_time = 0  # Track the last time a block was spawned
+spawn_interval = 1000  # Interval in milliseconds (1000 ms = 1 second)
+
 
 def start_screen():
     game_message = font.render("press space to start", False, "white")
     game_message_rect = game_message.get_rect(
-    center=(frame_size_x//2, frame_size_y//1.5))
+        center=(frame_size_x//2, frame_size_y//1.5))
     if game_init == False:
         window_screen.blit(game_message, game_message_rect)
-    # score = display_score()
+
 
 def game_active():
-    if game_init== True:
-        window_screen.fill((10,10,10))
-
-def obstacle():
     if game_init == True:
-        pygame.draw.rect(window_screen, color, pygame.Rect(30, 30, 60, 60))
+        window_screen.fill((10, 10, 10))
+        spawn_block_init()
+        block_gravity()
+
+
+def spawn_block_init():
+    global last_spawn_time
+    current_time = pygame.time.get_ticks()
+    if current_time - last_spawn_time >= spawn_interval:
+        spawn_blocks()
+        last_spawn_time = current_time
+
+
+def spawn_blocks():
+    block = pygame.Rect(30, 30, 60, 60)
+    blocks.append(block)
+
+
+def block_gravity():
+    for block in blocks:
+        block.move_ip(0, 5)
+        pygame.draw.rect(window_screen, color, block)
         pygame.display.flip()
-    
+
+        # cleanup
+        if block.midtop[1] > 800:
+            blocks.remove(block)
+
 
 while True:
     for event in pygame.event.get():
@@ -37,11 +61,10 @@ while True:
             pygame.quit()
             exit()
         if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_SPACE: 
-                game_init = True 
+            if event.key == pygame.K_SPACE:
+                game_init = True
                 print("Game active")
     start_screen()
-    game_active() 
-    obstacle()
+    game_active()
     pygame.display.update()
     clock.tick(FPS)
