@@ -9,6 +9,7 @@ clock = pygame.time.Clock()
 # score = 0 
 # high_score = 0 
 game_init = False
+color = (0,0,255)
 font = pygame.font.SysFont(None, 32)
 FPS = 60
 
@@ -23,6 +24,11 @@ def start_screen():
 def game_active():
     if game_init== True:
         window_screen.fill((10,10,10))
+
+def obstacle():
+    if game_init == True:
+        pygame.draw.rect(window_screen, color, pygame.Rect(30, 30, 60, 60))
+        pygame.display.flip()
     
 
 while True:
@@ -36,5 +42,6 @@ while True:
                 print("Game active")
     start_screen()
     game_active() 
+    obstacle()
     pygame.display.update()
     clock.tick(FPS)
