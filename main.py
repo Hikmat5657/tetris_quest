@@ -13,7 +13,7 @@ FPS = 60
 blocks = []
 
 last_spawn_time = 0  # Track the last time a block was spawned
-spawn_interval = 1000  # Interval in milliseconds (1000 ms = 1 second)
+spawn_interval = 5000  # Interval in milliseconds (1000 ms = 1 second)
 
 
 def start_screen():
@@ -46,7 +46,11 @@ def spawn_blocks():
 
 def block_gravity():
     for block in blocks:
-        block.move_ip(0, 5)
+        if block.bottom > 798:
+            block.move_ip(0,0)
+        else:
+            block.move_ip(0, 5)
+            print("block touching bottom")
         pygame.draw.rect(window_screen, color, block)
         pygame.display.flip()
 
