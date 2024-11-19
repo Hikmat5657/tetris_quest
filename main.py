@@ -37,11 +37,13 @@ def spawn_block_init():
     if current_time - last_spawn_time >= spawn_interval:
         spawn_blocks()
         last_spawn_time = current_time
-
+    
 
 def spawn_blocks():
     block = pygame.Rect(30, 30, 60, 60)
+    block.center = (200,0)
     blocks.append(block)
+     
 
 
 def block_gravity():
