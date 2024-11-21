@@ -1,4 +1,5 @@
 import pygame
+import random
 
 pygame.init()
 frame_size_x = 400
@@ -30,20 +31,30 @@ def game_active():
         spawn_block_init()
         block_gravity()
 
-
 def spawn_block_init():
     global last_spawn_time
     current_time = pygame.time.get_ticks()
     if current_time - last_spawn_time >= spawn_interval:
         spawn_blocks()
         last_spawn_time = current_time
-    
 
 def spawn_blocks():
-    block = pygame.Rect(30, 30, 60, 60)
-    block.center = (200,0)
-    blocks.append(block)
-     
+    randnum = random.randint(1,2)
+    print(randnum)
+    if randnum == 1:
+        block = pygame.Rect(30, 30, 60, 60)
+        block_2 = pygame.Rect (60,30,60,60)
+        blocks.append(block)
+        blocks.append(block_2)
+    else:
+        block_3 = pygame.Rect(30,30,60,60)
+        block_4 = pygame.Rect(30,60,60,60)
+        blocks.append(block_3)
+        blocks.append(block_4)
+    
+
+    
+
 
 
 def block_gravity():
@@ -52,7 +63,6 @@ def block_gravity():
             block.move_ip(0,0)
         else:
             block.move_ip(0, 5)
-            print("block touching bottom")
         pygame.draw.rect(window_screen, color, block)
         pygame.display.flip()
 
