@@ -37,28 +37,39 @@ def spawn_block_init():
         last_spawn_time = current_time
 
 def spawn_blocks():
-    randnum = random.randint(1,2)
-    print(randnum)
+    randnum = random.randint(1, 2)
+    # print(randnum)
     if randnum == 1:
         block = pygame.Rect(30, 30, 60, 60)
-        block_2 = pygame.Rect (60,30,60,60)
-        block_united1 = pygame.Rect.union(block,block_2,)
+        block_2 = pygame.Rect(60, 30, 60, 60)
+        block_united1 = pygame.Rect.union(block, block_2,)
         blocks.append(block_united1)
     else:
-        block_3 = pygame.Rect(30,30,60,60)
-        block_4 = pygame.Rect(30,60,60,60)
-        block_united2 = pygame.Rect.union(block_3,block_4)
+        block_3 = pygame.Rect(30, 30, 60, 60)
+        block_4 = pygame.Rect(30, 60, 60, 60)
+        block_united2 = pygame.Rect.union(block_3, block_4)
         blocks.append(block_united2)
-            
-def block_gravity():
-    for block in blocks:
-        if block.bottom > 798:
-            block.move_ip(0,0)
-        else:
-            block.move_ip(0, 5)
-        pygame.draw.rect(window_screen, color, block)
 
-        # cleanup
+def block_gravity():
+    for i, block in enumerate(blocks):
+        # Check for collisions with other blocks
+        should_move = True
+        test_rect = block.copy()
+        test_rect.move_ip(0, 5)  # Test the next position
+        
+        # Check collision with other blocks
+        for j, other_block in enumerate(blocks):
+            if i != j and test_rect.colliderect(other_block):
+                should_move = False
+                break
+        
+        # Move the block if no collision and not at bottom
+        if should_move and block.bottom < 798:
+            block.move_ip(0, 5)
+
+        pygame.draw.rect(window_screen, color, block)
+        
+        # cleanup blocks that are off screen
         if block.midtop[1] > 800:
             blocks.remove(block)
 
