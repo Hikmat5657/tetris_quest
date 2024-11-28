@@ -14,7 +14,7 @@ FPS = 60
 blocks = []
 
 last_spawn_time = 0  # Track the last time a block was spawned
-spawn_interval = 5000  # Interval in milliseconds (1000 ms = 1 second)
+spawn_interval = 1000  # Interval in milliseconds (1000 ms = 1 second)
 
 def start_screen():
     game_message = font.render("press space to start", False, "white")
@@ -38,16 +38,21 @@ def spawn_block_init():
 
 def spawn_blocks():
     randnum = random.randint(1, 2)
+    # randcoordinates = random.randint(0,11) * 30
+    randcoordinates = 360
+    print(randcoordinates)
     # print(randnum)
     if randnum == 1:
-        block = pygame.Rect(30, 30, 60, 60)
-        block_2 = pygame.Rect(60, 30, 60, 60)
+        block = pygame.Rect(30, 30, 30, 30)
+        block_2 = pygame.Rect(60, 30, 30, 30)
         block_united1 = pygame.Rect.union(block, block_2,)
+        block_united1.center = (randcoordinates,30)
         blocks.append(block_united1)
     else:
-        block_3 = pygame.Rect(30, 30, 60, 60)
-        block_4 = pygame.Rect(30, 60, 60, 60)
+        block_3 = pygame.Rect(30, 30, 30, 30)
+        block_4 = pygame.Rect(30, 60, 30, 30)
         block_united2 = pygame.Rect.union(block_3, block_4)
+        block_united2.center = (randcoordinates,30)
         blocks.append(block_united2)
 
 def block_gravity():
