@@ -38,8 +38,7 @@ def spawn_block_init():
 
 def spawn_blocks():
     randnum = random.randint(1, 2)
-    # randcoordinates = random.randint(0,11) * 30
-    randcoordinates = 360
+    randcoordinates = random.randint(1,11) * 30
     print(randcoordinates)
     # print(randnum)
     if randnum == 1:
