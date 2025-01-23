@@ -12,7 +12,7 @@ color = (0, 0, 255)
 font = pygame.font.SysFont(None, 32)
 FPS = 60
 blocks = []
-
+first_block = False  # variable acting as a state
 last_spawn_time = 0  # Track the last time a block was spawned
 spawn_interval = 1000  # Interval in milliseconds (1000 ms = 1 second)
 
@@ -30,28 +30,29 @@ def game_active():
         block_gravity()
 
 def spawn_block_init():
-    global last_spawn_time
-    current_time = pygame.time.get_ticks()
-    if current_time - last_spawn_time >= spawn_interval:
+    global first_block
+    if first_block == False:
         spawn_blocks()
-        last_spawn_time = current_time
+        first_block = True
 
+# spawn blocks only spawn once because once it spawns, first_block is set to true, then statement will not run anymore
 def spawn_blocks():
     randnum = random.randint(1, 2)
-    randcoordinates = random.randint(1,11) * 30
+    randcoordinates = random.randint(1, 11) * 30
     print(randcoordinates)
     # print(randnum)
     if randnum == 1:
         block = pygame.Rect(30, 30, 30, 30)
         block_2 = pygame.Rect(60, 30, 30, 30)
         block_united1 = pygame.Rect.union(block, block_2,)
-        block_united1.center = (randcoordinates,30)
+        block_united1.center = (randcoordinates, 30)
         blocks.append(block_united1)
+
     else:
         block_3 = pygame.Rect(30, 30, 30, 30)
         block_4 = pygame.Rect(30, 60, 30, 30)
         block_united2 = pygame.Rect.union(block_3, block_4)
-        block_united2.center = (randcoordinates,30)
+        block_united2.center = (randcoordinates, 30)
         blocks.append(block_united2)
 
 def block_gravity():
@@ -60,22 +61,23 @@ def block_gravity():
         should_move = True
         test_rect = block.copy()
         test_rect.move_ip(0, 5)  # Test the next position
-        
+
         # Check collision with other blocks
         for j, other_block in enumerate(blocks):
             if i != j and test_rect.colliderect(other_block):
                 should_move = False
                 break
-        
+
         # Move the block if no collision and not at bottom
         if should_move and block.bottom < 798:
             block.move_ip(0, 5)
 
         pygame.draw.rect(window_screen, color, block)
-        
+
         # cleanup blocks that are off screen
         if block.midtop[1] > 800:
             blocks.remove(block)
+
 
 while True:
     for event in pygame.event.get():
