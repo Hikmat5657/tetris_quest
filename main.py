@@ -29,6 +29,7 @@ def game_active():
         window_screen.fill((10, 10, 10))
         spawn_block_init()
         block_gravity()
+        draw_static_blocks()
 
 def spawn_block_init():
     global should_spawn
@@ -84,6 +85,9 @@ def block_gravity():
         if block.midtop[1] > 800:
             moving_block.remove(block)
 
+def draw_static_blocks():
+    for i, block in enumerate(static_block):
+        pygame.draw.rect(window_screen,color,block)
 
 while True:
     for event in pygame.event.get():
