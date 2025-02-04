@@ -61,15 +61,13 @@ def block_gravity():
     global should_spawn
     for i, block in enumerate(moving_block):
         # Check for collisions with other blocks
-        should_move = True
-        test_rect = block.copy()
-        test_rect.move_ip(0, 5)  # Test the next position
+        # should_move = True
+
+
 
         # Check collision with other blocks
-        for j, other_block in enumerate(moving_block):
-            if i != j and test_rect.colliderect(other_block):
-                should_move = False
-                break
+        if (block.collidelist(static_block) != -1):
+            should_move = False
 
         # Move the block if no collision and not at bottom
         if should_move and block.bottom < 798:
@@ -80,7 +78,7 @@ def block_gravity():
             should_spawn = True 
 
         pygame.draw.rect(window_screen, color, block)
-
+    
         # cleanup blocks that are off screen
         if block.midtop[1] > 800:
             moving_block.remove(block)
