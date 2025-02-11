@@ -61,10 +61,8 @@ def block_gravity():
     global should_spawn
     for i, block in enumerate(moving_block):
         # Check for collisions with other blocks
-        # should_move = True
-
-
-
+        should_move = True
+        
         # Check collision with other blocks
         if (block.collidelist(static_block) != -1):
             should_move = False
