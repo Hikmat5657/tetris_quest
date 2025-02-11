@@ -62,10 +62,15 @@ def block_gravity():
     for i, block in enumerate(moving_block):
         # Check for collisions with other blocks
         should_move = True
-        
+
         # Check collision with other blocks
         if (block.collidelist(static_block) != -1):
             should_move = False
+            static_block.append(block)
+            moving_block.remove(block)
+            should_spawn = True
+
+            
 
         # Move the block if no collision and not at bottom
         if should_move and block.bottom < 798:
