@@ -97,6 +97,11 @@ while True:
             pygame.quit()
             exit()
         if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_RIGHT:
+                if (moving_block):
+                    moving_block[0].move_ip(30,0)
+            if event.key == pygame.K_LEFT:
+                print("move left")
             if event.key == pygame.K_SPACE:
                 game_init = True
                 print("Game active")
