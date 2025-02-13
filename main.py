@@ -2,7 +2,7 @@ import pygame
 import random
 
 pygame.init()
-frame_size_x = 400
+frame_size_x = 390
 frame_size_y = 800
 window_screen = pygame.display.set_mode((frame_size_x, frame_size_y))
 pygame.display.set_caption("Tetris quest")
@@ -40,22 +40,25 @@ def spawn_block_init():
 # spawn blocks only spawn once because once it spawns, should_spawn is set to true, then statement will not run anymore
 def spawn_blocks():
     randnum = random.randint(1, 2)
-    randcoordinates = random.randint(1, 11) * 30
+    randcoordinates = random.randint(0, 12) * 30
+    randcoordinates2 = random.randint(0, 11) * 30
     print(randcoordinates)
     # print(randnum)
     if randnum == 1:
         block = pygame.Rect(30, 30, 30, 30)
         block_2 = pygame.Rect(60, 30, 30, 30)
         block_united1 = pygame.Rect.union(block, block_2,)
-        block_united1.center = (randcoordinates, 30)
+        block_united1.bottomleft = (randcoordinates, 30)
         moving_block.append(block_united1)
 
-    else:
+    if randnum == 2:
         block_3 = pygame.Rect(30, 30, 30, 30)
         block_4 = pygame.Rect(30, 60, 30, 30)
         block_united2 = pygame.Rect.union(block_3, block_4)
-        block_united2.center = (randcoordinates, 30)
+        block_united2.bottomleft = (randcoordinates2, 30)
         moving_block.append(block_united2)
+
+
 
 def block_gravity():
     global should_spawn
@@ -69,8 +72,6 @@ def block_gravity():
             static_block.append(block)
             moving_block.remove(block)
             should_spawn = True
-
-            
 
         # Move the block if no collision and not at bottom
         if should_move and block.bottom < 798:
