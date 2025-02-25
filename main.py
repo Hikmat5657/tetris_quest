@@ -50,18 +50,14 @@ def spawn_blocks():
     print(randcoordinates)
     # print(randnum)
     if randnum == 1:
-        block = pygame.Rect(30, 30, 30, 30)
-        block_2 = pygame.Rect(60, 30, 30, 30)
-        block_united1 = pygame.Rect.union(block, block_2,)
-        block_united1.bottomleft = (randcoordinates, 30)
-        moving_block.append(block_united1)
+        rectangleblock = pygame.Rect(30, 30, 60, 30)
+        rectangleblock.bottomleft = (randcoordinates, 30)
+        moving_block.append(rectangleblock)
 
     if randnum == 2:
-        block_3 = pygame.Rect(30, 30, 30, 30)
-        block_4 = pygame.Rect(30, 60, 30, 30)
-        block_united2 = pygame.Rect.union(block_3, block_4)
-        block_united2.bottomleft = (randcoordinates2, 30)
-        moving_block.append(block_united2)
+        tallblock = pygame.Rect(30, 30, 30, 60)
+        tallblock.bottomleft = (randcoordinates2, 30)
+        moving_block.append(tallblock)
 
 
 def block_gravity():
