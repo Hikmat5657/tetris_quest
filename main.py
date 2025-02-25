@@ -17,12 +17,14 @@ should_spawn = True  # variable acting as a state
 last_spawn_time = 0  # Track the last time a block was spawned
 spawn_interval = 1000  # Interval in milliseconds (1000 ms = 1 second)
 
+
 def start_screen():
     game_message = font.render("press space to start", False, "white")
     game_message_rect = game_message.get_rect(
         center=(frame_size_x//2, frame_size_y//1.5))
     if game_init == False:
         window_screen.blit(game_message, game_message_rect)
+
 
 def game_active():
     if game_init == True:
@@ -31,6 +33,7 @@ def game_active():
         block_gravity()
         draw_static_blocks()
 
+
 def spawn_block_init():
     global should_spawn
     if should_spawn == True:
@@ -38,6 +41,8 @@ def spawn_block_init():
         should_spawn = False
 
 # spawn blocks only spawn once because once it spawns, should_spawn is set to true, then statement will not run anymore
+
+
 def spawn_blocks():
     randnum = random.randint(1, 2)
     randcoordinates = random.randint(0, 12) * 30
@@ -59,7 +64,6 @@ def spawn_blocks():
         moving_block.append(block_united2)
 
 
-
 def block_gravity():
     global should_spawn
     for i, block in enumerate(moving_block):
@@ -73,23 +77,27 @@ def block_gravity():
             moving_block.remove(block)
             should_spawn = True
 
-        # Move the block if no collision and not at bottom
-        if should_move and block.bottom < 798:
-            block.move_ip(0, 5)
+        # adjust movement
+        if should_move:
+            if block.bottom < 798:
+                block.move_ip(0, 5)
+
         if block.bottom >= 799:
             static_block.append(block)
             moving_block.remove(block)
-            should_spawn = True 
+            should_spawn = True
 
         pygame.draw.rect(window_screen, color, block)
-    
+
         # cleanup blocks that are off screen
         if block.midtop[1] > 800:
             moving_block.remove(block)
 
+
 def draw_static_blocks():
     for i, block in enumerate(static_block):
-        pygame.draw.rect(window_screen,color,block)
+        pygame.draw.rect(window_screen, color, block)
+
 
 while True:
     for event in pygame.event.get():
@@ -99,9 +107,14 @@ while True:
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_RIGHT:
                 if (moving_block):
-                    moving_block[0].move_ip(30,0)
+                    if (moving_block[0].right < 389):
+                        moving_block[0].move_ip(30, 0)
+
             if event.key == pygame.K_LEFT:
-                print("move left")
+                if (moving_block):
+                    if (moving_block[0].left > 1):
+                        moving_block[0].move_ip(-30, 0)
+
             if event.key == pygame.K_SPACE:
                 game_init = True
                 print("Game active")
