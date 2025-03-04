@@ -8,7 +8,8 @@ window_screen = pygame.display.set_mode((frame_size_x, frame_size_y))
 pygame.display.set_caption("Tetris quest")
 clock = pygame.time.Clock()
 game_init = False
-color = (0, 0, 255)
+color_list = ["red", "green", "blue"]
+color = "red"
 font = pygame.font.SysFont(None, 32)
 FPS = 60
 moving_block = []
@@ -16,6 +17,7 @@ static_block = []
 should_spawn = True  # variable acting as a state
 last_spawn_time = 0  # Track the last time a block was spawned
 spawn_interval = 1000  # Interval in milliseconds (1000 ms = 1 second)
+# list_of_colors = ["red"]
 
 
 def start_screen():
@@ -36,7 +38,9 @@ def game_active():
 
 def spawn_block_init():
     global should_spawn
+    global color
     if should_spawn == True:
+        color = random.choice(color_list) # TODO: prevent the next color to be the same as current one
         spawn_blocks()
         should_spawn = False
 
