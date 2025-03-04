@@ -51,12 +51,12 @@ def spawn_blocks():
     # print(randnum)
     if randnum == 1:
         rectangleblock = pygame.Rect(30, 30, 60, 30)
-        rectangleblock.bottomleft = (randcoordinates, 30)
+        rectangleblock.bottomleft = (randcoordinates2, 30)
         moving_block.append(rectangleblock)
 
     if randnum == 2:
         tallblock = pygame.Rect(30, 30, 30, 55)
-        tallblock.bottomleft = (randcoordinates2, 30)
+        tallblock.bottomleft = (randcoordinates, 30)
         moving_block.append(tallblock)
 
 
