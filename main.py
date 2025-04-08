@@ -12,6 +12,7 @@ color_list = ["red", "green", "blue"]
 color = "red"
 font = pygame.font.SysFont(None, 32)
 FPS = 60
+temp_block = []
 moving_block = []
 static_block = []
 should_spawn = True  # variable acting as a state
@@ -51,32 +52,46 @@ def spawn_blocks():
     randnum = random.randint(1, 2)
     randcoordinates = random.randint(0, 12) * 30
     randcoordinates2 = random.randint(0, 11) * 30
-    print(randcoordinates)
+    # print(randcoordinates)
     # print(randnum)
     if randnum == 1:
         rectangleblock = pygame.Rect(30, 30, 60, 30)
         rectangleblock.bottomleft = (randcoordinates2, 30)
         moving_block.append(rectangleblock)
+        thisisdict ={}
+        thisisdict['block'] = rectangleblock
+        thisisdict["color"] = color
+        temp_block.append(thisisdict)
+        print(temp_block)
 
     if randnum == 2:
         tallblock = pygame.Rect(30, 30, 30, 55)
         tallblock.bottomleft = (randcoordinates, 30)
         moving_block.append(tallblock)
-
-
+        thisisdict ={}
+        thisisdict['block'] = tallblock
+        thisisdict["color"] = color
+        temp_block.append(thisisdict)
+        print(temp_block)
+        
 def block_gravity():
     global should_spawn
-    for i, block in enumerate(moving_block):
+    # for i, block in enumerate(moving_block):
+    for i, block in enumerate(temp_block):
         # Check for collisions with other blocks
         should_move = True
 
+        # access color of block in new temp_block
+        print(block["color"])
+
         # Check collision with other blocks
-        if (block.collidelist(static_block) != -1):
+        if (block.block.collidelist(static_block) != -1):
             should_move = False
             static_block.append(block)
             moving_block.remove(block)
             should_spawn = True
-
+            # print(static_block)
+        
         # adjust movement
         if should_move:
             if block.bottom < 798:
@@ -87,6 +102,7 @@ def block_gravity():
             moving_block.remove(block)
             should_spawn = True
 
+        # pygame.draw.rect(window_screen, color, block)
         pygame.draw.rect(window_screen, color, block)
 
         # cleanup blocks that are off screen
