@@ -59,7 +59,7 @@ def spawn_blocks():
         rectangleblock.bottomleft = (randcoordinates2, 30)
         moving_block.append(rectangleblock)
         thisisdict ={}
-        thisisdict['block'] = rectangleblock
+        thisisdict['rect'] = rectangleblock
         thisisdict["color"] = color
         temp_block.append(thisisdict)
         print(temp_block)
@@ -69,7 +69,7 @@ def spawn_blocks():
         tallblock.bottomleft = (randcoordinates, 30)
         moving_block.append(tallblock)
         thisisdict ={}
-        thisisdict['block'] = tallblock
+        thisisdict['rect'] = tallblock
         thisisdict["color"] = color
         temp_block.append(thisisdict)
         print(temp_block)
@@ -82,10 +82,10 @@ def block_gravity():
         should_move = True
 
         # access color of block in new temp_block
-        print(block["color"])
+        block_rect = block["rect"]
 
         # Check collision with other blocks
-        if (block.block.collidelist(static_block) != -1):
+        if (block_rect.collidelist(static_block) != -1):
             should_move = False
             static_block.append(block)
             moving_block.remove(block)
@@ -94,19 +94,19 @@ def block_gravity():
         
         # adjust movement
         if should_move:
-            if block.bottom < 798:
-                block.move_ip(0, 5)
+            if block_rect.bottom < 798:
+                block_rect.move_ip(0, 5)
 
-        if block.bottom >= 799:
+        if block_rect.bottom >= 799:
             static_block.append(block)
             moving_block.remove(block)
             should_spawn = True
 
         # pygame.draw.rect(window_screen, color, block)
-        pygame.draw.rect(window_screen, color, block)
+        pygame.draw.rect(window_screen, color, block_rect)
 
         # cleanup blocks that are off screen
-        if block.midtop[1] > 800:
+        if block_rect.midtop[1] > 800:
             moving_block.remove(block)
 
 
