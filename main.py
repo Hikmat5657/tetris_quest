@@ -83,12 +83,12 @@ def block_gravity():
 
         # access color of block in new temp_block
         block_rect = block["rect"]
-
+        static_block_rectangles = [item["rect"] for item in static_block]
         # Check collision with other blocks
-        if (block_rect.collidelist(static_block) != -1):
+        if (block_rect.collidelist(static_block_rectangles) != -1):
             should_move = False
             static_block.append(block)
-            moving_block.remove(block)
+            temp_block.remove(block)
             should_spawn = True
             # print(static_block)
         
@@ -99,7 +99,7 @@ def block_gravity():
 
         if block_rect.bottom >= 799:
             static_block.append(block)
-            moving_block.remove(block)
+            temp_block.remove(block)
             should_spawn = True
 
         # pygame.draw.rect(window_screen, color, block)
@@ -112,7 +112,7 @@ def block_gravity():
 
 def draw_static_blocks():
     for i, block in enumerate(static_block):
-        pygame.draw.rect(window_screen, color, block)
+        pygame.draw.rect(window_screen, color, block["rect"])
 
 
 while True:
@@ -122,14 +122,16 @@ while True:
             exit()
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_RIGHT:
-                if (moving_block):
-                    if (moving_block[0].right < 389):
-                        moving_block[0].move_ip(30, 0)
+                if (temp_block):
+                    print(temp_block[0]["rect"])
+                    if (temp_block[0]["rect"].right < 389):
+                        temp_block[0]["rect"].move_ip(30, 0)
 
             if event.key == pygame.K_LEFT:
-                if (moving_block):
-                    if (moving_block[0].left > 1):
-                        moving_block[0].move_ip(-30, 0)
+                if (temp_block):
+                    print(temp_block[0]["rect"])
+                    if (temp_block[0]["rect"].left > 1):
+                        temp_block[0]["rect"].move_ip(-30, 0)
 
             if event.key == pygame.K_SPACE:
                 game_init = True
