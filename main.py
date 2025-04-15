@@ -62,7 +62,7 @@ def spawn_blocks():
         thisisdict['rect'] = rectangleblock
         thisisdict["color"] = color
         temp_block.append(thisisdict)
-        print(temp_block)
+        # print(temp_block)
 
     if randnum == 2:
         tallblock = pygame.Rect(30, 30, 30, 55)
@@ -72,7 +72,7 @@ def spawn_blocks():
         thisisdict['rect'] = tallblock
         thisisdict["color"] = color
         temp_block.append(thisisdict)
-        print(temp_block)
+        # print(temp_block)
         
 def block_gravity():
     global should_spawn
@@ -83,6 +83,7 @@ def block_gravity():
 
         # access color of block in new temp_block
         block_rect = block["rect"]
+        block_color = block["color"]
         static_block_rectangles = [item["rect"] for item in static_block]
         # Check collision with other blocks
         if (block_rect.collidelist(static_block_rectangles) != -1):
@@ -101,6 +102,7 @@ def block_gravity():
             static_block.append(block)
             temp_block.remove(block)
             should_spawn = True
+            print(color)
 
         # pygame.draw.rect(window_screen, color, block)
         pygame.draw.rect(window_screen, color, block_rect)
@@ -112,7 +114,8 @@ def block_gravity():
 
 def draw_static_blocks():
     for i, block in enumerate(static_block):
-        pygame.draw.rect(window_screen, color, block["rect"])
+        pygame.draw.rect(window_screen, block["color"], block["rect"])
+        
 
 
 while True:
@@ -123,13 +126,13 @@ while True:
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_RIGHT:
                 if (temp_block):
-                    print(temp_block[0]["rect"])
+                    # print(temp_block[0]["rect"])
                     if (temp_block[0]["rect"].right < 389):
                         temp_block[0]["rect"].move_ip(30, 0)
 
             if event.key == pygame.K_LEFT:
                 if (temp_block):
-                    print(temp_block[0]["rect"])
+                    # print(temp_block[0]["rect"])
                     if (temp_block[0]["rect"].left > 1):
                         temp_block[0]["rect"].move_ip(-30, 0)
 
