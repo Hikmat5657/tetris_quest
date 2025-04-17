@@ -19,6 +19,8 @@ should_spawn = True  # variable acting as a state
 last_spawn_time = 0  # Track the last time a block was spawned
 spawn_interval = 1000  # Interval in milliseconds (1000 ms = 1 second)
 # list_of_colors = ["red"]
+horizontal_count = frame_size_x/30
+will_delete = []
 
 
 def start_screen():
@@ -35,13 +37,15 @@ def game_active():
         spawn_block_init()
         block_gravity()
         draw_static_blocks()
+        detect_rows()
 
 
 def spawn_block_init():
     global should_spawn
     global color
     if should_spawn == True:
-        color = random.choice(color_list) # TODO: prevent the next color to be the same as current one
+        # TODO: prevent the next color to be the same as current one
+        color = random.choice(color_list)
         spawn_blocks()
         should_spawn = False
 
@@ -49,16 +53,16 @@ def spawn_block_init():
 
 
 def spawn_blocks():
-    randnum = random.randint(1, 2)
+    randnum = random.randint(1, 1)
     randcoordinates = random.randint(0, 12) * 30
     randcoordinates2 = random.randint(0, 11) * 30
     # print(randcoordinates)
     # print(randnum)
     if randnum == 1:
-        rectangleblock = pygame.Rect(30, 30, 60, 30)
+        rectangleblock = pygame.Rect(30, 30, 30, 30)
         rectangleblock.bottomleft = (randcoordinates2, 30)
         moving_block.append(rectangleblock)
-        thisisdict ={}
+        thisisdict = {}
         thisisdict['rect'] = rectangleblock
         thisisdict["color"] = color
         temp_block.append(thisisdict)
@@ -68,12 +72,13 @@ def spawn_blocks():
         tallblock = pygame.Rect(30, 30, 30, 55)
         tallblock.bottomleft = (randcoordinates, 30)
         moving_block.append(tallblock)
-        thisisdict ={}
+        thisisdict = {}
         thisisdict['rect'] = tallblock
         thisisdict["color"] = color
         temp_block.append(thisisdict)
         # print(temp_block)
-        
+
+
 def block_gravity():
     global should_spawn
     # for i, block in enumerate(moving_block):
@@ -87,22 +92,23 @@ def block_gravity():
         static_block_rectangles = [item["rect"] for item in static_block]
         # Check collision with other blocks
         if (block_rect.collidelist(static_block_rectangles) != -1):
+            block_rect.move_ip(0, 0)
             should_move = False
             static_block.append(block)
             temp_block.remove(block)
             should_spawn = True
             # print(static_block)
-        
+
         # adjust movement
         if should_move:
-            if block_rect.bottom < 798:
+            if block_rect.bottom < 799:
                 block_rect.move_ip(0, 5)
 
         if block_rect.bottom >= 799:
             static_block.append(block)
             temp_block.remove(block)
             should_spawn = True
-            print(color)
+            # print(color)
 
         # pygame.draw.rect(window_screen, color, block)
         pygame.draw.rect(window_screen, color, block_rect)
@@ -112,10 +118,23 @@ def block_gravity():
             moving_block.remove(block)
 
 
+def detect_rows():
+    global will_delete
+    for i, block in enumerate(static_block):
+        if (block["rect"].bottom > 770):
+            will_delete.append(block)
+            static_block.remove(block)
+            print(will_delete)
+            if (len(will_delete) >= 13):
+                will_delete = []
+
+
 def draw_static_blocks():
     for i, block in enumerate(static_block):
         pygame.draw.rect(window_screen, block["color"], block["rect"])
-        
+
+    for i, block in enumerate(will_delete):
+        pygame.draw.rect(window_screen, block["color"], block["rect"])
 
 
 while True:
